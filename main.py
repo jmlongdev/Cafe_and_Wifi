@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, HiddenField
+from wtforms import StringField, SubmitField, SelectField, HiddenField, BooleanField, IntegerField, FloatField
 from wtforms.validators import DataRequired, url
 from flask_sqlalchemy import SQLAlchemy
 
@@ -14,45 +14,35 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# choices for ratings
-COFFEE_CHOICES = [" ", "☕", "☕☕", "☕☕☕", "☕☕☕☕", "☕☕☕☕☕"]
-WIFI_CHOICES = [" ", "✘", "💪", "💪💪", "💪💪💪", "💪💪💪💪","💪💪💪💪💪"]
-POWER_CHOICES = [" ", "✘", "🔌", "🔌🔌", "🔌🔌🔌", "🔌🔌🔌🔌", "🔌🔌🔌🔌🔌"]
-
 
 class CafeForm(FlaskForm):
     id_field = HiddenField()
     name = StringField('Cafe name', validators=[DataRequired()])
     map_url = StringField('Map URL')
     img_url = StringField('Image Url')
-    location = StringField('Location URL', validators=[DataRequired(), url(message="invalid URL")])
-    # open = StringField('Opening Time e.g. 8AM', validators=[DataRequired()])
-    # close = StringField('Closing Time e.g. 3PM', validators=[DataRequired()])
-    coffee_rating = SelectField('Coffee Rating', choices=COFFEE_CHOICES, validators=[DataRequired()])
-    wifi_rating = SelectField('WiFi Rating', choices=WIFI_CHOICES, validators=[DataRequired()])
-    power_rating = SelectField('Power Socket Rating', choices=POWER_CHOICES , validators=[DataRequired()])
-    sockets =
-    toilet =
-    wifi =
-    calls =
-    seats =
-    coffee_price =
+    location = StringField('Location', validators=[DataRequired()])
+    sockets = BooleanField('Has sockets')
+    toilet = BooleanField('Has a public restroom')
+    wifi = BooleanField('Has public wifi')
+    calls = BooleanField('Can make calls')
+    seats = StringField('How many seats does this cafe have?')
+    coffee_price = StringField('How much is a cup of coffee?')
     submit = SubmitField('Submit')
 # use a validator to check that the URL field has a URL entered.
 # ---------------------------------------------------------------------------
 
 
 class Cafe(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), unique=True, nullable=False)
     map_url = db.Column(db.String(500), nullable=False)
     img_url = db.Column(db.String(500), nullable=False)
-    location = db.Column(db.String(250), nullable=False)
+    location = db.Column(db.String(250), nullable=True)
     has_sockets = db.Column(db.Boolean, nullable=False)
     has_toilet = db.Column(db.Boolean, nullable=False)
     has_wifi = db.Column(db.Boolean, nullable=False)
     can_take_calls = db.Column(db.Boolean, nullable=False)
-    seats = db.Column(db.Boolean, nullable=False)
+    seats = db.Column(db.String, nullable=False)
     coffee_price = db.Column(db.String(250), nullable=False)
 
 db.create_all()
@@ -73,7 +63,7 @@ def add_cafe():
             name=request.form.get('name'),
             map_url=request.form.get('map_url'),
             img_url=request.form.get('img_url'),
-            location=request.form.get('loc'),
+            location=request.form.get('location'),
             has_sockets=bool(request.form.get('sockets')),
             has_toilet=bool(request.form.get('toilet')),
             has_wifi=bool(request.form.get('wifi')),
