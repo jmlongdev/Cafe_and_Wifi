@@ -2,31 +2,42 @@
 {% block title %}Restaurants{% endblock %}
 {% block styles %}
 {{ super() }}
-<link rel="stylesheet" href="static/css/styles.css">
+<!--<link rel="stylesheet" href="static/css/styles.css">-->
 {% endblock %}
 
 {% block content %}
+<!--<div class="container-fluid">-->
+<h1 class="allCafes">All Cafes</h1>
+{% for cafe in cafes %}
 <div class="container">
-          <h1>All Cafes</h1>
-  {% for cafe in cafes %}
-<div class="card" style="width: 25%;">
-  <img class="card-img-top img-fluid img-thumbnail" src="{{ cafe.img_url }}" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">{{ cafe.name }}</h5>
-    <p class="card-text"></p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">Location: {{ cafe.location }}</li>
-    <li class="list-group-item">Coffee price: {{ cafe.coffee_price }}</li>
-    <li class="list-group-item">Seats available: {{ cafe.seats }} </li>
-  </ul>
-  <div class="card-body">
-    <a href="{{ cafe.map_url }}" class="card-link">Map URL</a>
-    <a href="#" class="card-link">Another link</a>
-  </div>
+    <div class="row">
+        <div class="col-sm">
+            col 1
+        </div>
+        <div class="col-sm">
+            <div class="card bg-dark" style="width: 350px;">
+                <img class="card-img-top img-fluid img-thumbnail" src="{{ cafe.img_url }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ cafe.name }}</h5>
+                    <p class="card-text"></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Location: {{ cafe.location }}</li>
+                    <li class="list-group-item">Coffee price: {{ cafe.coffee_price }}</li>
+                    <li class="list-group-item">Seats available: {{ cafe.seats }} </li>
+                </ul>
+                <div class="card-body">
+                    <a href="{{ cafe.map_url }}" class="card-link">Map URL</a>
+                    <a href="#" class="card-link">Another link</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm"> col 3</div>
+    </div>
 </div>
 {% endfor %}
-</div>
+<!--</div>-->
+
 {% endblock %}
 
 <!--{% for item in row %}-->

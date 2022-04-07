@@ -45,6 +45,7 @@ class Cafe(db.Model):
     seats = db.Column(db.String, nullable=False)
     coffee_price = db.Column(db.String(250), nullable=False)
 
+
 db.create_all()
 
 
